@@ -1,0 +1,106 @@
+#include "DSP_Config.h"
+#include "gmm.h"
+#include <stdio.h>
+#include <stdlib.h>
+
+
+volatile union {
+	double sh;
+	Uint8 i8[8];
+} UARTdouble;
+
+
+double mu[39] = {61.1585129657379, -5.74723985270699, -2.78989531354003, -0.0420994936886923, -1.92206655669333, -3.19805895882792, 0.647350426627832, -3.24137099988045, -0.668502756320543, -0.881595104583871, -2.10728213845093, 0.422820606065159, -0.879574310750626, 55.7291212008463, 5.05529359380379, 4.99473397509873, -0.665419448228032, 6.19343974194807, -3.27848370484933, -3.21840170881185, -6.25146804699897, -10.1722882168009, -5.57551677386466, -10.5705844292465, -2.76648519738533, 3.07910536303960, 46.5379457872463, -22.8199300924723, 1.96042945878262, -5.45770189349809, 3.18950613771214, -2.54585427908221, -9.86381864976615, 2.94570403541360, 12.8600971767895, -1.58698993865869, -16.1966718246127, 18.5670893953342, -7.64959796094415};
+double sigma[39] = {51.1553270798579,8.63123292917377,20.9998511869590,37.8647408910361,16.1952325464903,15.2036268718149,20.0002648642530,15.2283297234968,16.1986437962737,15.1657517598300,16.4141220443577,16.0897421248751,10.3449281669868,23.3479544573774,14.4018128041820,14.9843638744472,15.1636585840873,19.4519836500661,48.5997104256241,90.6212579351156,82.3087987859465,75.8779103630742,141.912334401368,98.9602231934447,31.8914618871687,45.4660289124521,247.204606409580,7.55633384315036,8.55299379047496,11.1833260266739,26.3608303711612,18.9421790290552,16.6789641972673,79.9149780778171,34.0497742304292,15.9238648234407,46.8228040586413,64.9248691152806,49.3568642604177};
+double weight[3] = {0.446137970804794,	0.333641213126123,	0.220220816069083};
+Uint8 temp1 = 0;
+Uint8 temp2 = 0;
+
+void ReadParameters(double *parameters, int paramsize){
+	int ii = 0;
+	int iter = 0;
+	int count = 0;
+	while(ii<paramsize){
+		printf("Index: %d, \n", ii);
+		if(IsDataReady_UART2()){
+			  temp1 = Read_UART2();
+			  if(temp1==temp2){
+				  count++;
+				  if(count>10){
+					  count = 0;
+					  while(IsTxReady_UART2()==0) ;
+					  Write_UART2(1);
+				  }
+				  else{
+					  while(IsTxReady_UART2()==0) ;
+					  Write_UART2(0);
+				  }
+			  }
+			  else{
+				  UARTdouble.i8[iter++] = temp1;
+				  //printf("Iter: %d, Received uint8: %d \n", iter, UARTdouble.i8[iter-1]);
+				  while(IsTxReady_UART2()==0) ;
+				  Write_UART2(0);
+				  count = 0;
+			  }
+			  temp2 = temp1;
+
+			  if(iter>7){
+				  iter = 0;
+				  parameters[ii++] = UARTdouble.sh;
+				  printf("Index: %d, Received double: %lf \n", ii, UARTdouble.sh);
+			  }
+		}
+	}
+}
+
+void ReadParameters2(double *parameters, int paramsize){
+	int ii = 0;
+	int iter = 0;
+	while(ii<paramsize){
+		printf("Index:\n %d, \n", ii);
+		fflush(stdin);
+		if(IsDataReady_UART2()){
+			  temp1 = Read_UART2();
+			  UARTdouble.i8[iter++] = temp1;
+			  while(IsTxReady_UART2()==0) ;
+			  Write_UART2(1);
+
+			  if(iter>7){
+				  iter = 0;
+				  parameters[ii++] = UARTdouble.sh;
+				  printf("Index: %d, Received double: %lf \n", ii, UARTdouble.sh);
+			  }
+		}
+	}
+}
+
+int main()
+{
+  DSP_Init();
+
+  Init_UART2(115200);
+  int i;
+  GMM gmm;
+  gmm_new(&gmm, 3, 13, "diagonal");
+  gmm_set_convergence_tol(&gmm, 1e-6);
+  gmm_set_regularization_value(&gmm, 1e-6);
+  gmm_set_initialization_method(&gmm, "random");
+  for (i=0; i<39; i++) {
+	  gmm.means[i] = mu[i];
+	  gmm.covars[i] = sigma[i];
+  }
+  for (i=0; i<3; i++) {
+	  gmm.weights[i] = weight[i];
+  }
+
+  //double params[39];
+  //printf("Index: sd, \n");
+  //ReadParameters2(params, 39);
+
+
+  // main stalls here, interrupts drive operation
+  while(1) {
+	  ;
+  }
+}
