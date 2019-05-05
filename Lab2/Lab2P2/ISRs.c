@@ -80,10 +80,10 @@ interrupt void Codec_ISR()
 	if (ii == L && flag1) {
 		reversefunc(bufL, resL, L);
 		reversefunc(bufR, resR, L);
-		for (iii = 0; iii < L; iii++) {
-			printf("left=%d, left reversed=%d, at %d\n", bufL[iii], resL[iii], iii);
-			printf("right=%d, right reversed=%d, at %d\n", bufR[iii], resR[iii], iii);
-		}
+		//for (iii = 0; iii < L; iii++) {
+		//	printf("left=%d, left reversed=%d, at %d\n", bufL[iii], resL[iii], iii);
+		//	printf("right=%d, right reversed=%d, at %d\n", bufR[iii], resR[iii], iii);
+		//}
 
 	}
 
