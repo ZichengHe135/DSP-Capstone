@@ -49,7 +49,7 @@ void echo_doShit(stereoSample*CodecDataIn, stereoSample* CodecDataOut,
 //				iB = (echo_ii + echo_delay + 360) % 720;
 //			} else {
 //				// SW6 down, pitch down
-		  iA = (echo_ii - echo_delay + MAX_SIZE) % MAX_SIZE;
+			iA = (echo_ii - echo_delay + MAX_SIZE) % MAX_SIZE;
 			iB = (echo_ii );//- echo_delay + MAX_SIZE/2) % MAX_SIZE; // make this channel one have the non offset one
 //			}
 			yLeft = echo_bufL[iA] + xLeft; //temp mix w dry do this later
