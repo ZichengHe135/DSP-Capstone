@@ -71,17 +71,17 @@ interrupt void Codec_ISR()
  	if(CheckForOverrun())					// overrun error occurred (i.e. halted DSP)
 		return;								// so serial port is reset to recover
 
-  	CodecDataIn.ABC = ReadCodecData();		// get input data samples
+	CodecDataIn.ABC = ReadCodecData();		// get input data samples
 	
 	/* add your code starting here */
 
-    CodecDataIn.Channel[0] = SYNTH_Tick();
-  	pitchShift(&CodecDataIn, &CodecDataOut, pitchShift_bufL, pitchShift_bufR); // working
-  	//echo_doShit(&CodecDataIn, &CodecDataOut, echo_bufL, echo_bufR);
-  	//reverb_doShit(&CodecDataIn, &CodecDataOut);
+  CodecDataIn.Channel[0] = SYNTH_Tick();
+	pitchShift(&CodecDataIn, &CodecDataOut, pitchShift_bufL, pitchShift_bufR); // working
+	//echo_doShit(&CodecDataIn, &CodecDataOut, echo_bufL, echo_bufR);
+	//reverb_doShit(&CodecDataIn, &CodecDataOut);
 
-  	//CodecDataOut = oscillators();
-  	/* end your code here */
+	//CodecDataOut = oscillators();
+	/* end your code here */
 
 	WriteCodecData(CodecDataOut.ABC);		// send output data to  port
 }

@@ -20,10 +20,10 @@ int main()
 	
 	// initialize DSP board
 
-  	//echo_init();
-  	//reverb_init(0.9, 32768/8); // do /2 for weird stuff
-  	//printf("sdfg\n");
-  	SYNTH_Init();
+	//echo_init();
+	//reverb_init(0.9, 32768/8); // do /2 for weird stuff
+	//printf("sdfg\n");
+	SYNTH_Init();
 	// call StartUp for application specific code
 	// defined in each application directory
 	StartUp();
