@@ -5,8 +5,8 @@
  *      Author: tayl0rh
  */
 
-#ifndef ECHO_H_
-#define ECHO_H_
+#ifndef _REVERB_H_
+#define _REVERB_H_
 
 #include "../DSP_Config.h"
 #include "stereoSample.h"
@@ -18,8 +18,8 @@
 
 
 
-void   reverb_init(float gn, int d);
-void   reverb_doShit(stereoSample*CodecDataIn, stereoSample* CodecDataOut);
+void reverb_init(float gn, int d);
+void reverb_doShit(stereoSample*CodecDataIn, stereoSample* CodecDataOut);
 
 // wtf wrong location.
 //float feedback;
@@ -27,4 +27,4 @@ void   reverb_doShit(stereoSample*CodecDataIn, stereoSample* CodecDataOut);
 //Uint32 ii;
 //Uint32 iii; // which is where the output writing location is.
 
-#endif /* STUFF_ECHO_H_ */
+#endif /* _REVERB_H_ */

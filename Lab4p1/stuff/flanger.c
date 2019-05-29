@@ -1,7 +1,9 @@
-// Author:  Zicheng He
-// Date:    May 29th 2019
-// File:    flanger.c
-//
+/*
+ * flanger.c
+ *
+ *  Created on: May 29th, 2019
+ *      Author: Zicheng He
+ */
 
 #include "flanger.h"
 #include <math.h>
