@@ -5,7 +5,7 @@
  *      Author: tayl0rh
  */
 #include "echo.h"
-#define MAX_SIZE 32768 // of buffer in stereo smp.s
+#define MAX_SIZE 4096 // of buffer in stereo smp.s
 #include "pitchshift.h"
 #include "../DSP_Config.h"
 #include <stdlib.h>
@@ -46,14 +46,15 @@ void   reverb_init(float gn, int d) {
 }
 void   reverb_doShit(stereoSample*CodecDataIn, stereoSample* CodecDataOut) {
 		short xLeft, xRight, yLeft, yRight, yLeft2, yRight2, yLeft3, yRight3, yLeft4, yRight4;
-		xLeft  = CodecDataIn->Channel[ 0] >> 2; // /4 b/c
-		xRight = CodecDataIn->Channel[ 1] >> 2;
 		if (ReadSwitches() & 4) { // != 0
 			// SW7 down, do nothing
-			yLeft = xLeft;
-			yRight = xRight;
+		    CodecDataOut->Channel[0] = CodecDataIn->Channel[0];
+		    CodecDataOut->Channel[1] = CodecDataIn->Channel[1];
 		} else {
 			// SW7 up, do echo
+	        xLeft  = CodecDataIn->Channel[ 0] >> 2; // /4 b/c
+	        xRight = CodecDataIn->Channel[ 1] >> 2;
+
 			int iA, iB;
 
 //			if (flag2 == 0) {
@@ -75,7 +76,7 @@ void   reverb_doShit(stereoSample*CodecDataIn, stereoSample* CodecDataOut) {
 			yLeft4 = revrb_bufL4[jj4] + (short) ((float)xLeft * -1.0 *gain); //temp mix w dry do this later
 			yRight4 = revrb_bufR4[jj4] + (short) ((float)xRight * -1.0 * gain);
 
-		}
+
 
 		revrb_bufL1[jj1] = (short) ((float)xLeft+ ((float)yLeft * gain)); //dec. vol. b4 put in buffer for headroom
 		revrb_bufR1[jj1] = (short)((float)xRight+ ((float)yRight * gain));
@@ -94,7 +95,7 @@ void   reverb_doShit(stereoSample*CodecDataIn, stereoSample* CodecDataOut) {
 		CodecDataOut->Channel[1] = yRight+yRight2+yRight3+yRight4;
 		if (jj1 >= delay1) jj1 = 0;if (jj2 >= delay2) jj2 = 0;if (jj3 >= delay3) jj3 = 0;if (jj4 >= delay4) jj4 = 0;
 	//	if (reverb_delay >= delayy) reverb_delay = 0;
-		return;
+		}
 }
 void   reverb_reset(Uint32 newDelay, float newPhase) {
 	delay1 = newDelay;
