@@ -75,7 +75,7 @@ interrupt void Codec_ISR()
 	
 	/* add your code starting here */
 
-  CodecDataIn.Channel[0] = SYNTH_Tick();
+	CodecDataIn.Channel[0] = SYNTH_Tick();
 	pitchShift(&CodecDataIn, &CodecDataOut, pitchShift_bufL, pitchShift_bufR); // working
 	//echo_doShit(&CodecDataIn, &CodecDataOut, echo_bufL, echo_bufR);
 	//reverb_doShit(&CodecDataIn, &CodecDataOut);
