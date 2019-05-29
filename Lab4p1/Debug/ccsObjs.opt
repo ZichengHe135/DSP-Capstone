@@ -1,1 +1,0 @@
-"./ISRs.obj" "./LCDK_Support_DSP.obj" "./StartUp.obj" "./main.obj" "./vectors.obj" "./stuff/echo.obj" "./stuff/pitchshift.obj" "./stuff/reverb.obj" "./stuff/synth.obj" "../link6748.cmd" -llibc.a 
