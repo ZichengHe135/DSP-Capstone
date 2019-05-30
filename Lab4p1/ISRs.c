@@ -9,9 +9,9 @@
 ///////////////////////////////////////////////////////////////////////
 
 #include "DSP_Config.h"
-#include <stdlib.h>
+//#include <stdlib.h>
 //#include "stuff/echo.h"
-//#include "stuff/reverb.h"
+#include "stuff/reverb.h"
 #include "stuff/pitchshift.h"
 //#include "stuff/osc.h"
   
@@ -41,16 +41,15 @@
 //} stereoSample;
 
 
-stereoSample CodecDataIn, CodecDataOut;
+stereoSample CodecDataIn, CodecDataOut,CodecDataMed;
 
 
 /* add any global variables here */
 
-short pitchShift_bufL[720];
-short pitchShift_bufR[720];
+
 //short echo_bufL[32768] = {0}; //buffer[]
 //short echo_bufR[32768] = {0};
-#include "stuff/synth.hpp"
+
 interrupt void Codec_ISR()
 ///////////////////////////////////////////////////////////////////////
 // Purpose:   Codec interface interrupt service routine  
@@ -68,17 +67,20 @@ interrupt void Codec_ISR()
 
 
 
- 	if(CheckForOverrun())					// overrun error occurred (i.e. halted DSP)
-		return;								// so serial port is reset to recover
+// 	if(CheckForOverrun())					// overrun error occurred (i.e. halted DSP)
+//		return;								// so serial port is reset to recover
 
-  	CodecDataIn.ABC = ReadCodecData();		// get input data samples
-	
+  	//CodecDataIn.ABC = ReadCodecData();		// get input data samples
+
 	/* add your code starting here */
 
-    CodecDataIn.Channel[0] = SYNTH_Tick();
-  	pitchShift(&CodecDataIn, &CodecDataOut, pitchShift_bufL, pitchShift_bufR); // working
+    CodecDataIn.Channel[0] = SYNTH_Tick()/4;
+    CodecDataIn.Channel[1] = CodecDataIn.Channel[0];
+  	pitchShift(&CodecDataIn, &CodecDataMed); // working
   	//echo_doShit(&CodecDataIn, &CodecDataOut, echo_bufL, echo_bufR);
-  	//reverb_doShit(&CodecDataIn, &CodecDataOut);
+  	//CodecDataIn.Channel[0] = CodecDataOut.Channel[0];
+  	//CodecDataIn.Channel[1] = CodecDataOut.Channel[1];
+  	reverb_doShit(&CodecDataMed, &CodecDataOut);
 
   	//CodecDataOut = oscillators();
   	/* end your code here */

@@ -12,6 +12,6 @@
 #include "../DSP_Config.h"
 #include "stereoSample.h"
 
-void   pitchShift(stereoSample* CodecDataIn, stereoSample* CodecDataOut, short* pitchShift_bufL, short* pitchShift_bufR);
+void   pitchShift(stereoSample* CodecDataIn, stereoSample* CodecDataOut);
 
 #endif /* STUFF_PS_H_ */

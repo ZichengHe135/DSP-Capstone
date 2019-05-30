@@ -4,9 +4,10 @@
 
 int pitchShift_ii = 0;
 int pitchShift_delay = 0;
+short pitchShift_bufL[720];
+short pitchShift_bufR[720];
 
-
-void pitchShift(stereoSample*CodecDataIn, stereoSample* CodecDataOut, short* pitchShift_bufL, short* pitchShift_bufR) {
+void pitchShift(stereoSample*CodecDataIn, stereoSample* CodecDataOut) {
 	short xLeft, xRight, yLeft, yRight;
 	xLeft  = CodecDataIn->Channel[ 0];
 	xRight = CodecDataIn->Channel[ 1];
