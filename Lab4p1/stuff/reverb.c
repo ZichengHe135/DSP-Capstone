@@ -4,7 +4,7 @@
  *  Created on: May 7, 2019
  *      Author: tayl0rh
  */
-#include "echo.h"
+#include "reverb.h"
 #define MAX_SIZE 4096 // of buffer in stereo smp.s
 #include "pitchshift.h"
 #include "../DSP_Config.h"
@@ -31,7 +31,7 @@ short revrb_bufR4[4096] = {0};
 Uint32 jj = 0;
 int reverb_delay = 0;
 
-void   reverb_init(float gn, int d) {
+void reverb_init(float gn, int d) {
 
 	gain = gn;
 	delay1 = d*(4/4);
@@ -44,7 +44,7 @@ void   reverb_init(float gn, int d) {
 	jj4 = 0;
 	//jjj = 0; // newPhase=0
 }
-void   reverb_doShit(stereoSample*CodecDataIn, stereoSample* CodecDataOut) {
+void reverb_doShit(stereoSample*CodecDataIn, stereoSample* CodecDataOut) {
 		short xLeft, xRight, yLeft, yRight, yLeft2, yRight2, yLeft3, yRight3, yLeft4, yRight4;
 		if (ReadSwitches() & 4) { // != 0
 			// SW7 down, do nothing
@@ -97,7 +97,7 @@ void   reverb_doShit(stereoSample*CodecDataIn, stereoSample* CodecDataOut) {
 	//	if (reverb_delay >= delayy) reverb_delay = 0;
 		}
 }
-void   reverb_reset(Uint32 newDelay, float newPhase) {
+void reverb_reset(Uint32 newDelay, float newPhase) {
 	delay1 = newDelay;
 	if(jj1 >= delay1) jj1 = 0;
 

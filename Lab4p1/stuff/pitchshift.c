@@ -1,3 +1,11 @@
+/*
+ * pitchshift.c
+ *
+ *  Created on: May 7, 2019
+ *      Author: tayl0rh
+ *  based on the code from Lab2 Problem4
+ */
+
 #include "pitchshift.h"
 #include "../DSP_Config.h"
 #include <stdlib.h>
@@ -48,4 +56,4 @@ void pitchShift(stereoSample*CodecDataIn, stereoSample* CodecDataOut) {
 	if (pitchShift_ii > 719) pitchShift_ii = 0;
 	if (pitchShift_delay > 719) pitchShift_delay = 0;
 	return;
-	}
+}

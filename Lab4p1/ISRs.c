@@ -41,7 +41,7 @@
 //} stereoSample;
 
 
-stereoSample CodecDataIn, CodecDataOut,CodecDataMed;
+stereoSample CodecDataIn, CodecDataOut;
 
 
 /* add any global variables here */
@@ -72,18 +72,19 @@ interrupt void Codec_ISR()
 
   	//CodecDataIn.ABC = ReadCodecData();		// get input data samples
 
+//    CodecDataIn.ABC = ReadCodecData();      // get input data samples
 	/* add your code starting here */
 
     CodecDataIn.Channel[0] = SYNTH_Tick()/4;
     CodecDataIn.Channel[1] = CodecDataIn.Channel[0];
-  	pitchShift(&CodecDataIn, &CodecDataMed); // working
+  	pitchShift(&CodecDataIn, &CodecDataOut); // working
   	//echo_doShit(&CodecDataIn, &CodecDataOut, echo_bufL, echo_bufR);
-  	//CodecDataIn.Channel[0] = CodecDataOut.Channel[0];
-  	//CodecDataIn.Channel[1] = CodecDataOut.Channel[1];
-  	reverb_doShit(&CodecDataMed, &CodecDataOut);
+  	CodecDataIn.Channel[0] = CodecDataOut.Channel[0];
+  	CodecDataIn.Channel[1] = CodecDataOut.Channel[1];
+  	reverb_doShit(&CodecDataIn, &CodecDataOut);
 
-  	//CodecDataOut = oscillators();
-  	/* end your code here */
+
+	/* end your code here */
 
 	WriteCodecData(CodecDataOut.ABC);		// send output data to  port
 }
