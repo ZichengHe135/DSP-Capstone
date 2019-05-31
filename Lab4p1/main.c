@@ -32,7 +32,7 @@ int main()
 	//int t = Z4testi(5);
 	// main stalls here, interrupts drive operation
   	while(1) {
-  	  //SYNTH_UpdateSettings();
+  	  SYNTH_UpdateSettings();
   	  //printf("fuck yeah, this is the 1st ever in the universe ELF 4mat rt-dsp shit with a c++14 compiler\n");
   	}
 }
