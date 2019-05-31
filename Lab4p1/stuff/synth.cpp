@@ -39,12 +39,19 @@ double mtof (Uint8 note) {
 
 extern "C" void SYNTH_UpdateSettings(){
     //std::cout << "not";
-    //if (IsDataReady_UART2()) {
+    if (IsDataReady_UART2()) {
         //Uint8 uint = Read_UART2();
     //for(long i = 0; i < 1000000; i++);
-        printf ("d\n");
+        int uu;
+        char uv[2];
+        for(uu=0;uu<2;uu++)
+            uv[uu] = Read_UART2();
+        printf ("%x\n", uv[0]);
+        fflush(stdin);
+
+
         //ch1.setup(32000.0,mtof(uint),0.25);
-    //}
+    }
 //for(;;);
 //    oscTriangle1.setup(32000.0,120.0*1.26,0.25);
 //    oscTriangle2.setup(32000.0,120.0*1.5,0.25);
