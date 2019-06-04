@@ -7,12 +7,15 @@ fopen(s);
 
 while(true)
     
-    user_input = input('write input: ', 's');
-    if strcmp(user_input, 'quit')
-        break
-    end
-    %user_input
-    fwrite(s, user_input);
+	user_input = input('write input: ', 's');
+	if strcmp(user_input, 'quit')
+		break
+	end
+	%user_input
+	for i = 1 : 40
+		fwrite(s, user_input);    	
+	end
+	
 
 end
 
