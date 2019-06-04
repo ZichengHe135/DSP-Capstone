@@ -16,8 +16,8 @@
 #define Calloc(type,n) (type *)calloc(n,sizeof(type))
 
 void echo_init();
-void echo_doShit(stereoSample*CodecDataIn, stereoSample* CodecDataOut,
-	short* echo_bufL, short* echo_bufR);
+void echo_doShit(stereoSample*CodecDataIn, stereoSample* CodecDataOut
+	/*short* echo_bufL, short* echo_bufR*/);
 
 // wtf wrong location.
 //float feedback;

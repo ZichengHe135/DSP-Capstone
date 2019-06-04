@@ -14,13 +14,14 @@
 #include "stuff/reverb.h"
 #include "stuff/synth.hpp"
 //#include <libtst.h>
+
 int main()
 {
 
 	// initialize DSP board
 
-  	//echo_init();
-  	reverb_init(0.9, 32768/8); // do /2 for weird stuff
+  	echo_init();
+  	//reverb_init(0.9, 32768/8); // do /2 for weird stuff
   	//printf("sdfg\n");
   	SYNTH_Init();
 	// call StartUp for application specific code

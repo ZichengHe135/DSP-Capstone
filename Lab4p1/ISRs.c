@@ -47,8 +47,7 @@ stereoSample CodecDataIn, CodecDataOut;
 /* add any global variables here */
 
 
-//short echo_bufL[32768] = {0}; //buffer[]
-//short echo_bufR[32768] = {0};
+
 
 interrupt void Codec_ISR()
 ///////////////////////////////////////////////////////////////////////
@@ -67,8 +66,8 @@ interrupt void Codec_ISR()
 
 
 
- 	if(CheckForOverrun())					// overrun error occurred (i.e. halted DSP)
-		return;								// so serial port is reset to recover
+ 	//if(CheckForOverrun())					// overrun error occurred (i.e. halted DSP)
+	//	return;								// so serial port is reset to recover
 
   	//CodecDataIn.ABC = ReadCodecData();		// get input data samples
 
@@ -77,10 +76,12 @@ interrupt void Codec_ISR()
 
     CodecDataIn.Channel[0] = SYNTH_Tick()/4;
     CodecDataIn.Channel[1] = CodecDataIn.Channel[0];
-  	//pitchShift(&CodecDataIn, &CodecDataOut); // working
-  	//echo_doShit(&CodecDataIn, &CodecDataOut, echo_bufL, echo_bufR);
+  	pitchShift(&CodecDataIn, &CodecDataOut); // working
+
   	CodecDataIn.Channel[0] = CodecDataOut.Channel[0];
   	CodecDataIn.Channel[1] = CodecDataOut.Channel[1];
+
+    echo_doShit(&CodecDataIn, &CodecDataOut);
   	//reverb_doShit(&CodecDataIn, &CodecDataOut);
 
 

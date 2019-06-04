@@ -39,8 +39,9 @@ public:
     const double& tick () override
     {
         // Make sure the basic values are correctly set
-        assert(samplerate > 0.0 && "Samplerate not correctly set");
-        assert(frequency < samplerate && "Frequency not correctly set");
+        if((samplerate <= 0.0) || // && "Samplerate not correctly set");
+        (frequency > samplerate))// "Frequency not correctly set");
+            return 0.0;
         
         // Increase phase by +1 step
         phase += M_2PI * fractionFrequency;
@@ -62,6 +63,7 @@ public:
         // Calculate sine value for current phase step and scale to desired volume. I tried using fast
         // sine approximations and lookup tables instead, but they added audible harmonic imperfections.
         state = std::sin(phase) * amplitude;
+        amplitude *= 0.9999;
         
         // Return calculated sine value
         return state;

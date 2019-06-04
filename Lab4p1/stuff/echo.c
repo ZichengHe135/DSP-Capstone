@@ -12,6 +12,8 @@
 #define MAX_SIZE 32768 // of buffer in stereo smp.s
 
 /* add any global variables here */
+short echo_bufL[32768] = {0}; //buffer[]
+short echo_bufR[32768] = {0};
 float feedback = 0;
 Uint32 ii = 0;
 Uint32 iii = 0; // which is where the output writing location is.
@@ -19,7 +21,7 @@ Uint32 iii = 0; // which is where the output writing location is.
 int delay = MAX_SIZE;
 
 int echo_ii = 0;
-int echo_delay = 8192;
+int echo_delay = MAX_SIZE; // huh
 
 void echo_init() {
 
@@ -29,8 +31,8 @@ void echo_init() {
 	iii = 0; // newPhase=0
 }
 
-void echo_doShit(stereoSample*CodecDataIn, stereoSample* CodecDataOut,
-	short* echo_bufL, short* echo_bufR) {
+void echo_doShit(stereoSample*CodecDataIn, stereoSample* CodecDataOut
+	/*short* echo_bufL, short* echo_bufR*/) {
 		short xLeft, xRight, yLeft, yRight;
 		xLeft  = CodecDataIn->Channel[ 0];
 		xRight = CodecDataIn->Channel[ 1];

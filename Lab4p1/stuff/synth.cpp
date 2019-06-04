@@ -36,21 +36,21 @@ extern "C" void SYNTH_Init(){
 double mtof (Uint8 note) {
     return 440.0 * pow(2, (note-69.0)/12.0);  // totally working
 }
-
+extern unsigned char uart = 0;
 extern "C" void SYNTH_UpdateSettings(){
     //std::cout << "not";
+
     if (IsDataReady_UART2()) {
-        //Uint8 uint = Read_UART2();
-    //for(long i = 0; i < 1000000; i++);
-        int uu;
-        char uv[2];
-        for(uu=0;uu<2;uu++)
-            uv[uu] = Read_UART2();
-        printf ("%x\n", uv[0]);
-        fflush(stdin);
+        unsigned char uart2 = Read_UART2();
+        if (uart2 == uart) {
+            uart = uart2;
+        }
+        else {  // actually do sh!t
+            //printf ("%x\n", uart2);
+            //fflush(stdin);
+        }
 
-
-        //ch1.setup(32000.0,mtof(uint),0.25);
+        ch1.setup(32000.0,mtof(uart2),0.25);
     }
 //for(;;);
 //    oscTriangle1.setup(32000.0,120.0*1.26,0.25);
