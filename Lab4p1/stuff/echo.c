@@ -22,9 +22,11 @@ int delay = MAX_SIZE;
 
 int echo_ii = 0;
 int echo_delay = MAX_SIZE; // huh
+extern char echoEnable;
+char echoEnable = 0;
 
 void echo_init() {
-
+    echoEnable = 0;
 	feedback = 0;
 	delay = MAX_SIZE;
 	ii = 0;
@@ -37,7 +39,7 @@ void echo_doShit(stereoSample*CodecDataIn, stereoSample* CodecDataOut
 		xLeft  = CodecDataIn->Channel[ 0];
 		xRight = CodecDataIn->Channel[ 1];
 		
-		if (ReadSwitches() & 4) { // != 0
+		if (echoEnable) { // != 0
 			// SW7 down, do nothing
 			yLeft = xLeft;
 			yRight = xRight;

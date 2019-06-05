@@ -45,7 +45,7 @@ stereoSample CodecDataIn, CodecDataOut;
 
 
 /* add any global variables here */
-
+extern char volume;
 
 
 

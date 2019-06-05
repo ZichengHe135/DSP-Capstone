@@ -36,21 +36,40 @@ extern "C" void SYNTH_Init(){
 double mtof (Uint8 note) {
     return 440.0 * pow(2, (note-69.0)/12.0);  // totally working
 }
-extern unsigned char uart = 0;
+unsigned char uart = 0;
+extern "C" char echoEnable;
 extern "C" void SYNTH_UpdateSettings(){
     //std::cout << "not";
 
     if (IsDataReady_UART2()) {
         unsigned char uart2 = Read_UART2();
         if (uart2 == uart) {
-            uart = uart2;
+
         }
-        else {  // actually do sh!t
+        else if (uart2 != 0) {  // actually do sh!t
             //printf ("%x\n", uart2);
             //fflush(stdin);
-        }
+            if(uart2 & 0x80) {
+                // set the effects mode
+                switch (uart2) {
+                    case 0x80:
+                        echoEnable = !echoEnable;
+                       break;
+                    case 0x81:
+                        //echoEnable = 0;
+                        break;
 
-        ch1.setup(32000.0,mtof(uart2),0.25);
+
+
+
+                }
+            } else {
+            ch1.setup(32000.0,mtof(uart2),0.25);
+            }
+        }
+        uart = uart2;
+
+
     }
 //for(;;);
 //    oscTriangle1.setup(32000.0,120.0*1.26,0.25);
