@@ -34,6 +34,8 @@ M = containers.Map(keySet, ValueSet);
 
 % set up key detection
 h.fig = figure ;
+img = imread('keyboard.png');
+image(img);
 
 % set up the timer
 h.t = timer ;
