@@ -47,7 +47,7 @@ public:
         // If direction set to +1 then rising saw wave
         // If direction set to -1 then falling saw wave
         // Increase phase by +1 step
-        phase += direction * fractionFrequency;
+        phase += direction * fractionFrequency; // Normalized frequency 1/T
         
         // Constrain/wrap phase value to sensible boundaries [0,1]
         //

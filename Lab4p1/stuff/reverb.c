@@ -30,8 +30,10 @@ short revrb_bufR4[4096] = {0};
 
 Uint32 jj = 0;
 int reverb_delay = 0;
+extern char reverbEnable;
+char reverbEnable = 0;
 
-void reverb_init(float gn, int d) {
+void reverb_init(float gn, int d) { // assert that d <= 4096 max delay
 
 	gain = gn;
 	delay1 = d*(4/4);
@@ -46,7 +48,7 @@ void reverb_init(float gn, int d) {
 }
 void reverb_doShit(stereoSample*CodecDataIn, stereoSample* CodecDataOut) {
 		short xLeft, xRight, yLeft, yRight, yLeft2, yRight2, yLeft3, yRight3, yLeft4, yRight4;
-		if (ReadSwitches() & 4) { // != 0
+		if (!reverbEnable) { // != 0
 			// SW7 down, do nothing
 		    CodecDataOut->Channel[0] = CodecDataIn->Channel[0];
 		    CodecDataOut->Channel[1] = CodecDataIn->Channel[1];

@@ -39,7 +39,7 @@ void echo_doShit(stereoSample*CodecDataIn, stereoSample* CodecDataOut
 		xLeft  = CodecDataIn->Channel[ 0];
 		xRight = CodecDataIn->Channel[ 1];
 		
-		if (echoEnable) { // != 0
+		if (!echoEnable) { // != 0
 			// SW7 down, do nothing
 			yLeft = xLeft;
 			yRight = xRight;

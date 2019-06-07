@@ -59,11 +59,11 @@ public:
         //
         // IF-branches are slower than simple maths in time critical code, this does the same but faster
         phase += ((phase >= M_2PI) * -M_2PI) + ((phase < 0.0) * M_2PI);
-        
+        //printf("%f\n",phase);
         // Calculate sine value for current phase step and scale to desired volume. I tried using fast
         // sine approximations and lookup tables instead, but they added audible harmonic imperfections.
         state = std::sin(phase) * amplitude;
-        amplitude *= 0.9999;
+        amplitude *= 0.99999;
         
         // Return calculated sine value
         return state;

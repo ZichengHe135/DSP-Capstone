@@ -12,6 +12,6 @@
 #include "../DSP_Config.h"
 #include "stereoSample.h"
 
-void flanger(stereoSample* CodecDataIn, stereoSample* CodecDataOut);//not included correctly rn
+void vibrato(stereoSample* CodecDataIn, stereoSample* CodecDataOut);
 
 #endif /* _FLANGER_H_ */

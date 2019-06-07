@@ -79,6 +79,7 @@ public:
         
         // Fetch square wave value from wavetable and scale to desired volume
         state = wavetable[index] * amplitude;
+        amplitude *= 0.9999;
         
         // Return calculated square wave value
         return state;

@@ -40,6 +40,9 @@ protected:
         generator.setFrequency(Hz);
     }
     
+    void noteOff () {
+        generator.setFrequency(0.0);
+    }
     /** Sets the oscillator amplitude as float gain (not dB). */
     void setAmplitude (const float& Amplitude)
     {

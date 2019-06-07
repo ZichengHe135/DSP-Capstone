@@ -48,7 +48,7 @@ stereoSample CodecDataIn, CodecDataOut;
 extern char volume;
 
 
-
+// interrupt to make it not return to wrong place
 interrupt void Codec_ISR()
 ///////////////////////////////////////////////////////////////////////
 // Purpose:   Codec interface interrupt service routine  
@@ -76,13 +76,16 @@ interrupt void Codec_ISR()
 
     CodecDataIn.Channel[0] = SYNTH_Tick()/4;
     CodecDataIn.Channel[1] = CodecDataIn.Channel[0];
-  	pitchShift(&CodecDataIn, &CodecDataOut); // working
+  	//pitchShift(&CodecDataIn, &CodecDataOut); // working
+    flangerShift(&CodecDataIn, &CodecDataOut);
 
   	CodecDataIn.Channel[0] = CodecDataOut.Channel[0];
   	CodecDataIn.Channel[1] = CodecDataOut.Channel[1];
 
     echo_doShit(&CodecDataIn, &CodecDataOut);
-  	//reverb_doShit(&CodecDataIn, &CodecDataOut);
+    CodecDataIn.Channel[0] = CodecDataOut.Channel[0];
+    CodecDataIn.Channel[1] = CodecDataOut.Channel[1];
+  	reverb_doShit(&CodecDataIn, &CodecDataOut);
 
 
 	/* end your code here */
