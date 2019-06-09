@@ -22,7 +22,7 @@ RCH::Oscillators::SquarePulse ch6;
 RCH::Oscillators::Sampler ch7;
 //RCH::Oscillators::Saw ch8;
 
-#define SAMPLERBUF 1234//0x1000000
+#define SAMPLERBUF 0x100000
 
 unsigned char uart = 0; // prev. uart d flipflop not
 unsigned char channel = 0;
@@ -38,7 +38,8 @@ extern "C" char psEnableHiLow;
 extern "C" char startRecording;
 char startRecording = 0;
 unsigned long isrI = 0;
-unsigned long sampleSize=1234;
+unsigned long sampleSize=SAMPLERBUF;
+#pragma DATA_SECTION ("CE0");
 short sample[SAMPLERBUF];
 
 extern "C" void SYNTH_StartRecording(short recInput) {
@@ -47,9 +48,10 @@ extern "C" void SYNTH_StartRecording(short recInput) {
         isrI = 0;
     }
     sample[isrI++] = recInput;
-    if(isrI >= sampleSize) {
+    if(isrI >= SAMPLERBUF) {
         startRecording = 0;
     }
+    sampleSize = SAMPLERBUF;
 }
 
 extern "C" void SYNTH_Init(){
@@ -59,7 +61,7 @@ extern "C" void SYNTH_Init(){
     //ch6.setup(32000.0,120.0*1.0,0.0F);
     ch5.setPulseWidth(0.5);
     ch6.setWidth(0.5);
-    ch7.setup(0.0,120.0*1.0,0.0F);
+    //ch7.setup(0.0,120.0*1.0,0.0F);
     ch7.settheBuffer(sample, sampleSize);
     printf("working\n");
 }
@@ -114,6 +116,10 @@ extern "C" void SYNTH_UpdateSettings(){
                     case 0xB0: // sampler rec.
                         startRecording = !startRecording;
                         break;
+                    case 0xB1:
+                        sampleSize = isrI;
+                        startRecording = 0;
+                        break;
 
                     case 0xff:
                     ch1.noteOff();
@@ -122,6 +128,7 @@ extern "C" void SYNTH_UpdateSettings(){
                     ch4.noteOff();
                     ch5.noteOff();
                     ch6.noteOff();
+                    ch7.noteOff();
                     break;
 
 
@@ -147,7 +154,7 @@ extern "C" void SYNTH_UpdateSettings(){
                         ch6.setup(32000.0,mtof(uart2),0.2f);
                         break;
                     case 6:
-                        ch7.setup(440.0,mtof(uart2),0.2f);
+                        ch7.setup(440.0,mtof(uart2),0.5f);
                         break;
                 }
 
@@ -169,7 +176,7 @@ extern "C" short SYNTH_Tick(){
     //    a[i] = new float[1];
     //float** tst  = buffer;
     return (short) (clamp(ch1.tick()
-            +ch5.tick()+ch6.tick()+ch2.tick()+ch3.tick()+ch4.tick()
+            +ch5.tick()+ch6.tick()+ch2.tick()+ch3.tick()+ch4.tick() + ch7.tick()
             ,-1.0,0.999999999999)* (1<<15));
    // oscTriangle.fill(a,2,1);
 }

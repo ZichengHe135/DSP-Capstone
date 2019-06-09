@@ -141,7 +141,7 @@ protected:
             direction = Direction;
         }
     }
-    // virtual
+    // virtual // set the ptr for this class's buffer.
     void settheBuffer(short* buf, uintptr_t size){
              samplBuf = buf;
              samplSize = size;
