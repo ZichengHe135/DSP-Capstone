@@ -114,11 +114,10 @@ extern "C" void SYNTH_UpdateSettings(){
                         ch6.setWidth(((double)uart2-0xA0)/16.0);
                         break;
                     case 0xB0: // sampler rec.
+                        if(startRecording)
+                            sampleSize = isrI;
+
                         startRecording = !startRecording;
-                        break;
-                    case 0xB1:
-                        sampleSize = isrI;
-                        startRecording = 0;
                         break;
 
                     case 0xff:
