@@ -34,8 +34,12 @@ protected:
     double phase = 0.0;             // Last phase position in range [0,1]
     double phaseOffset = 0.0;       // Phase start offset after oscillator was reset()
     
-    double direction = 1.0;         // SAW modifier: 1.0 = rising, -1.0 = falling wave
+    float direction = 1.0;         // SAW modifier: 1.0 = rising, -1.0 = falling wave
     double width = 1.0;             // PULSE modifier: pulse width in range [0,1] per half phase
+    // why does c++ require that we put all fields in the base class.
+    short* samplBuf;
+    uintptr_t samplSize;
+
     
     //==============================================================================
     /** Call this whenever the sine stream should restart, e.g. before note on etc.
@@ -137,7 +141,11 @@ protected:
             direction = Direction;
         }
     }
-    
+    // virtual
+    void settheBuffer(short* buf, uintptr_t size){
+             samplBuf = buf;
+             samplSize = size;
+         }
     /** Sets the pulse width for a pulse wave oscillator.
         Range is in [0,1] where 0 = silence and 0.5 = square wave. */
     void setPulseWidth (const double& Width)
@@ -227,6 +235,10 @@ protected:
         // Must be doubled since stored value is per 1/2 cycle
         return width * 2.0;
     }
+//virtual
+//    void settheBuffer(short* buf, uintptr_t size){
+//        generator.settheBuffer(buf, size);
+//    }
     
 }; // class RCH::Helpers::Skeleton
 

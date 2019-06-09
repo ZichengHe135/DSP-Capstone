@@ -24,6 +24,7 @@ extern "C" {
   void SYNTH_Init();
   short SYNTH_Tick();
   void SYNTH_UpdateSettings();
+  void SYNTH_StartRecording(short recInput);
 
 #ifdef __cplusplus
 } //end extern "C"

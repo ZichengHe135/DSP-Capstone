@@ -10,9 +10,11 @@
 
 #include "DSP_Config.h"
 //#include <stdlib.h>
-//#include "stuff/echo.h"
+#include "stuff/echo.h"
 #include "stuff/reverb.h"
 #include "stuff/pitchshift.h"
+#include "stuff/flanger.h"
+#include "stuff/vibrato.h"
 //#include "stuff/osc.h"
   
 // Data is received as 2 16-bit words (left/right) packed into one
@@ -46,7 +48,7 @@ stereoSample CodecDataIn, CodecDataOut;
 
 /* add any global variables here */
 extern char volume;
-
+extern char startRecording;
 
 // interrupt to make it not return to wrong place
 interrupt void Codec_ISR()
@@ -66,30 +68,40 @@ interrupt void Codec_ISR()
 
 
 
- 	//if(CheckForOverrun())					// overrun error occurred (i.e. halted DSP)
-	//	return;								// so serial port is reset to recover
+// 	if(CheckForOverrun())					// overrun error occurred (i.e. halted DSP)
+//		return;								// so serial port is reset to recover
 
   	//CodecDataIn.ABC = ReadCodecData();		// get input data samples
-
-//    CodecDataIn.ABC = ReadCodecData();      // get input data samples
+    if (startRecording) {
+        CodecDataIn.ABC = ReadCodecData(); // get input data samples
+        SYNTH_StartRecording(CodecDataIn.Channel[0]/2 + CodecDataIn.Channel[1]/2);
+        WriteCodecData(CodecDataIn.ABC);
+    } else {
 	/* add your code starting here */
 
     CodecDataIn.Channel[0] = SYNTH_Tick()/4;
     CodecDataIn.Channel[1] = CodecDataIn.Channel[0];
-  	//pitchShift(&CodecDataIn, &CodecDataOut); // working
-    flangerShift(&CodecDataIn, &CodecDataOut);
 
-  	CodecDataIn.Channel[0] = CodecDataOut.Channel[0];
-  	CodecDataIn.Channel[1] = CodecDataOut.Channel[1];
+   pitchShift(&CodecDataIn, &CodecDataOut); // working
+
+    CodecDataIn.ABC = CodecDataOut.ABC;
+
+    vibrato(&CodecDataIn, &CodecDataOut);
+
+    CodecDataIn.ABC = CodecDataOut.ABC;
+
+    flanger(&CodecDataIn, &CodecDataOut);
+
+    CodecDataIn.ABC = CodecDataOut.ABC;
 
     echo_doShit(&CodecDataIn, &CodecDataOut);
-    CodecDataIn.Channel[0] = CodecDataOut.Channel[0];
-    CodecDataIn.Channel[1] = CodecDataOut.Channel[1];
-  	reverb_doShit(&CodecDataIn, &CodecDataOut);
-
+    CodecDataIn.ABC = CodecDataOut.ABC;
+    reverb_doShit(&CodecDataIn, &CodecDataOut);
+//
 
 	/* end your code here */
 
 	WriteCodecData(CodecDataOut.ABC);		// send output data to  port
+    }
 }
 

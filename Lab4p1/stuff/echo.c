@@ -12,7 +12,9 @@
 #define MAX_SIZE 32768 // of buffer in stereo smp.s
 
 /* add any global variables here */
+#pragma DATA_SECTION (echo_bufL, "CE0");  // Sadly, external mDDR2 so not portable.
 short echo_bufL[32768] = {0}; //buffer[]
+#pragma DATA_SECTION (echo_bufR, "CE0");
 short echo_bufR[32768] = {0};
 float feedback = 0;
 Uint32 ii = 0;

@@ -41,7 +41,7 @@ protected:
     }
     
     void noteOff () {
-        generator.setFrequency(0.0);
+        generator.setSampleRate(0.0);
     }
     /** Sets the oscillator amplitude as float gain (not dB). */
     void setAmplitude (const float& Amplitude)
@@ -76,6 +76,12 @@ protected:
         generator.setDirection(Direction);
     }
     
+    // wrong place really
+    void settheBuffer(short* buf, uintptr_t size){
+        generator.settheBuffer(buf, size);
+    }
+
+
     /** Sets the pulse width for a pulse wave oscillator.
         Range is in [0,1] where 0 = silence and 0.5 = square wave. */
     void setPulseWidth (const double& PulseWidth)

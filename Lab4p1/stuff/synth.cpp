@@ -19,27 +19,57 @@ RCH::Oscillators::Saw ch3;
 RCH::Oscillators::Square ch4;
 RCH::Oscillators::Pulse ch5;
 RCH::Oscillators::SquarePulse ch6;
-//RCH::Oscillators::Square ch7;
+RCH::Oscillators::Sampler ch7;
 //RCH::Oscillators::Saw ch8;
 
+#define SAMPLERBUF 1234//0x1000000
 
+unsigned char uart = 0; // prev. uart d flipflop not
+unsigned char channel = 0;
+
+// VirtualSWitches
+extern "C" char echoEnable;
+extern "C" char reverbEnable;
+extern "C" char flangerEnable;
+extern "C" char vibEnable;
+extern "C" char psEnableHiLow;
+
+// sampler pt 2
+extern "C" char startRecording;
+char startRecording = 0;
+unsigned long isrI = 0;
+unsigned long sampleSize=1234;
+short sample[SAMPLERBUF];
+
+extern "C" void SYNTH_StartRecording(short recInput) {
+    if (startRecording == 1) {
+        startRecording++;
+        isrI = 0;
+    }
+    sample[isrI++] = recInput;
+    if(isrI >= sampleSize) {
+        startRecording = 0;
+    }
+}
 
 extern "C" void SYNTH_Init(){
     //std::cout << "not";
-    ch1.setup(32000.0,50.0,0.0);
-    ch5.setup(32000.0,120.0*1.0,0.1f);
+    ch1.setup(32000.0,50.0,0.1f);
+    ch3.setup(32000.0,120.0*1.0,0.1f);
     //ch6.setup(32000.0,120.0*1.0,0.0F);
-    //ch7.setup(32000.0,120.0*1.0,0.0F);
+    ch5.setPulseWidth(0.5);
+    ch6.setWidth(0.5);
+    ch7.setup(0.0,120.0*1.0,0.0F);
+    ch7.settheBuffer(sample, sampleSize);
     printf("working\n");
 }
 
 double mtof (Uint8 note) {
     return 440.0 * pow(2, (note-69.0)/12.0);  // totally working
 }
-unsigned char uart = 0;
-unsigned char channel = 0;
-extern "C" char echoEnable;
-extern "C" char reverbEnable;
+
+
+
 extern "C" void SYNTH_UpdateSettings(){
     //std::cout << "not";
 
@@ -56,17 +86,35 @@ extern "C" void SYNTH_UpdateSettings(){
                 switch (uart2) {
                     case 0x80:
                         echoEnable = !echoEnable;
-                       break;
+                        break;
                     case 0x81:
                         reverbEnable = !reverbEnable;
                         break;
+                    case 0x82:
+                        vibEnable = !vibEnable;
+                       break;
+                    case 0x83:
+                       flangerEnable = !flangerEnable;
+                       break;
+
+                    case 0x84:
+                        psEnableHiLow ^= 1;
+                        break;
+                    case 0x85:
+                        psEnableHiLow ^= 2;
+                        break;
+
                     case 0x90 ... 0x9F: // switch instrument
                         channel = uart2 - 0x90;
                         break;
-                    case 0xA0 ... 0xB0: // various duty cycle change
-                        ch5.setPulseWidth(((double)uart2-0xA0)/4.0);
-                        ch6.setWidth(((double)uart2-0xA0)/4.0);
+                    case 0xA0 ... 0xAF: // various duty cycle change
+                        ch5.setPulseWidth(((double)uart2-0xA0)/16.0);
+                        ch6.setWidth(((double)uart2-0xA0)/16.0);
                         break;
+                    case 0xB0: // sampler rec.
+                        startRecording = !startRecording;
+                        break;
+
                     case 0xff:
                     ch1.noteOff();
                     ch2.noteOff();
@@ -97,6 +145,9 @@ extern "C" void SYNTH_UpdateSettings(){
                         break;
                     case 5:
                         ch6.setup(32000.0,mtof(uart2),0.2f);
+                        break;
+                    case 6:
+                        ch7.setup(440.0,mtof(uart2),0.2f);
                         break;
                 }
 

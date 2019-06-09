@@ -41,8 +41,9 @@ public:
     const double& tick () override
     {
         // Make sure the basic values are correctly set
-        assert(samplerate > 0.0 && "Samplerate not correctly set");
-        assert(frequency < samplerate && "Frequency not correctly set");
+        if((samplerate <= 0.0) || // && "Samplerate not correctly set");
+        (frequency > samplerate))// "Frequency not correctly set");
+            return state;
         
         // If direction set to +1 then rising saw wave
         // If direction set to -1 then falling saw wave
