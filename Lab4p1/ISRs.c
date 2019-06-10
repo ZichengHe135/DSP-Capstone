@@ -76,7 +76,7 @@ interrupt void Codec_ISR()
         CodecDataIn.ABC = ReadCodecData(); // get input data samples
         CodecDataIn.Channel[0] = CodecDataIn.Channel[0]/2 + CodecDataIn.Channel[1]/2;  // Sorry, mono only support 4 now.
                 SYNTH_StartRecording(CodecDataIn.Channel[0]);
-        CodecDataIn.Channel[1] = CodecDataIn.Channel[0];
+        CodecDataIn.Channel[1] = CodecDataIn.Channel[0] /= 4;
         WriteCodecData(CodecDataIn.ABC); // Preview mono version
     } else {
 	/* add your code starting here */

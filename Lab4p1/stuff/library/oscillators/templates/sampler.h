@@ -59,7 +59,7 @@ public:
         // }
         //
         // IF-branches are slower than simple maths in time critical code, this does the same but faster
-        phase += ((phase >= samplSize) * -samplSize) + ((phase < 0.0) * samplSize);
+        phase += ((phase >= samplSize) * -samplSize) + ((phase < 0.0) * samplSize);  // make this check not both evaluate to true if you want looping.
         //printf("%f\n",phase);
         // Calculate sampler value for current phase step and scale to desired volume. I tried using fast
         // sampler approximations and lookup tables instead, but they added audible harmonic imperfections.

@@ -1,15 +1,15 @@
 #! /bin/bash
 chmod ugoa+wrx /dev/ttyUSB1 
-stty -F /dev/ttyUSB1 115200
+stty -F /dev/ttyUSB1 115200 # note that this doesn't actually work for some reason so do it with:
 #screen  /dev/ttyUSB1 115200 
 echo -n -e '\x92\x92\x00' > /dev/ttyUSB1; sleep 0.2
 
 echo -n -e '\x40\x40\x00' > /dev/ttyUSB1; sleep 0.2
-echo -n -e '\xFF\xFF\x00' > /dev/ttyUSB1; sleep 0.2
+echo -n -e '\xFF\xFF\x00' > /dev/ttyUSB1; sleep 1.2
 
 echo -n -e '\x80\x80\x00' > /dev/ttyUSB1; sleep 0.2
 echo -n -e '\x40\x40\x00' > /dev/ttyUSB1; sleep 0.2
-echo -n -e '\xFF\xFF\x00' > /dev/ttyUSB1; sleep 0.2
+echo -n -e '\xFF\xFF\x00' > /dev/ttyUSB1; sleep 1.2
 echo -n -e '\x80\x80\x00' > /dev/ttyUSB1; sleep 0.2
 
 echo -n -e '\x81\x81\x00' > /dev/ttyUSB1; sleep 0.2
@@ -18,44 +18,38 @@ echo -n -e '\xFF\xFF\x00' > /dev/ttyUSB1; sleep 0.3
 echo -n -e '\x81\x81\x00' > /dev/ttyUSB1; sleep 0.2
 
 echo -n -e '\x82\x82\x00' > /dev/ttyUSB1; sleep 0.2
-echo -n -e '\x40\x40\x00' > /dev/ttyUSB1; sleep 1.2
+echo -n -e '\x40\x40\x00' > /dev/ttyUSB1; sleep 1
 echo -n -e '\xFF\xFF\x00' > /dev/ttyUSB1; sleep 1  
 echo -n -e '\x82\x82\x00' > /dev/ttyUSB1; sleep 0.2
 
 echo -n -e '\x83\x83\x00' > /dev/ttyUSB1; sleep 0.2
-echo -n -e '\x40\x40\x00' > /dev/ttyUSB1; sleep 1.2
+echo -n -e '\x40\x40\x00' > /dev/ttyUSB1; sleep 1
 echo -n -e '\xFF\xFF\x00' > /dev/ttyUSB1; sleep 1 
 echo -n -e '\x83\x83\x00' > /dev/ttyUSB1; sleep 0.2
 
 echo -n -e '\x84\x84\x00' > /dev/ttyUSB1; sleep 0.2
 echo -n -e '\x40\x40\x00' > /dev/ttyUSB1; sleep 0.2
 echo -n -e '\xFF\xFF\x00' > /dev/ttyUSB1; sleep 1 
+
+
+echo -n -e '\x85\x85\x00' > /dev/ttyUSB1; sleep 0.2
+echo -n -e '\x40\x40\x00' > /dev/ttyUSB1; sleep 0.2
+echo -n -e '\xFF\xFF\x00' > /dev/ttyUSB1; sleep 1 
+echo -n -e '\x85\x85\x00' > /dev/ttyUSB1; sleep 0.2
 echo -n -e '\x84\x84\x00' > /dev/ttyUSB1; sleep 0.2
 
-echo -n -e '\x85\x85\x00' > /dev/ttyUSB1; sleep 0.2
-echo -n -e '\x40\x40\x00' > /dev/ttyUSB1; sleep 0.2
-echo -n -e '\xFF\xFF\x00' > /dev/ttyUSB1; sleep 1 
-echo -n -e '\x85\x85\x00' > /dev/ttyUSB1; sleep 0.2
 
 echo -n -e '\x86\x86\x00' > /dev/ttyUSB1; sleep 0.2
 echo -n -e '\x40\x40\x00' > /dev/ttyUSB1; sleep 0.2
 echo -n -e '\xFF\xFF\x00' > /dev/ttyUSB1; sleep 1 
 echo -n -e '\x86\x86\x00' > /dev/ttyUSB1; sleep 0.2
 
-echo -n -e '\x87\x87\x00' > /dev/ttyUSB1; sleep 0.2
-echo -n -e '\x40\x40\x00' > /dev/ttyUSB1; sleep 0.2
-echo -n -e '\xFF\xFF\x00' > /dev/ttyUSB1; sleep 1 
-echo -n -e '\x87\x87\x00' > /dev/ttyUSB1; sleep 0.2
+#echo -n -e '\x87\x87\x00' > /dev/ttyUSB1; sleep 0.2
+#echo -n -e '\x40\x40\x00' > /dev/ttyUSB1; sleep 0.2
+#echo -n -e '\xFF\xFF\x00' > /dev/ttyUSB1; sleep 1 
+#echo -n -e '\x87\x87\x00' > /dev/ttyUSB1; sleep 0.2
 
-echo -n -e '\x88\x88\x00' > /dev/ttyUSB1; sleep 0.2
-echo -n -e '\x40\x40\x00' > /dev/ttyUSB1; sleep 0.2
-echo -n -e '\xFF\xFF\x00' > /dev/ttyUSB1; sleep 1 
-echo -n -e '\x88\x88\x00' > /dev/ttyUSB1; sleep 0.2
 
-echo -n -e '\x89\x89\x00' > /dev/ttyUSB1; sleep 0.2
-echo -n -e '\x40\x40\x00' > /dev/ttyUSB1; sleep 0.2
-echo -n -e '\xFF\xFF\x00' > /dev/ttyUSB1; sleep 3  
-echo -n -e '\x89\x89\x00' > /dev/ttyUSB1; sleep 0.2
 
 
 

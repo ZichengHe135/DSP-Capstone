@@ -2,7 +2,8 @@
 chmod ugoa+wrx /dev/ttyUSB1 
 stty -F /dev/ttyUSB1 115200
 #screen  /dev/ttyUSB1 115200 
-echo -n -e '\xb0\xb0\x00' > /dev/ttyUSB1; sleep 5
+#start playing minchoir4.u110 (aiff) for Obscure 90's reference to LMM SNES
+echo -n -e '\xb0\xb0\x00' > /dev/ttyUSB1; sleep 3
 echo -n -e '\xb0\xb0\x00' > /dev/ttyUSB1; sleep 0
 echo -n -e '\x96\x96\x00' > /dev/ttyUSB1; sleep 0.2
 echo -n -e '\xFF\xFF\x00' > /dev/ttyUSB1; sleep 0.2

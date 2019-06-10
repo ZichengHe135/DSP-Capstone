@@ -52,12 +52,13 @@ extern "C" void SYNTH_StartRecording(short recInput) {
         startRecording = 0;
     }
     sampleSize = SAMPLERBUF;
+    ch7.settheBuffer(sample, sampleSize);
 }
 
 extern "C" void SYNTH_Init(){
     //std::cout << "not";
-    ch1.setup(32000.0,50.0,0.1f);
-    ch3.setup(32000.0,120.0*1.0,0.1f);
+    ch1.setup(32000.0,120.0,0.2f);
+    //ch3.setup(32000.0,120.0*1.0,0.1f);
     //ch6.setup(32000.0,120.0*1.0,0.0F);
     ch5.setPulseWidth(0.5);
     ch6.setWidth(0.5);
@@ -110,12 +111,14 @@ extern "C" void SYNTH_UpdateSettings(){
                         channel = uart2 - 0x90;
                         break;
                     case 0xA0 ... 0xAF: // various duty cycle change
-                        ch5.setPulseWidth(((double)uart2-0xA0)/16.0);
-                        ch6.setWidth(((double)uart2-0xA0)/16.0);
+                        ch5.setPulseWidth(((double)uart2-0x9f)/16.0);
+                        ch6.setWidth(((double)uart2-0x9f)/16.0);
                         break;
                     case 0xB0: // sampler rec.
-                        if(startRecording)
+                        if(startRecording) {
                             sampleSize = isrI;
+                            ch7.settheBuffer(sample, sampleSize);
+                        }
 
                         startRecording = !startRecording;
                         break;
@@ -135,25 +138,25 @@ extern "C" void SYNTH_UpdateSettings(){
             } else {
                 switch (channel){
                     case 0:
-                        ch1.setup(32000.0,mtof(uart2),0.25f);
+                        ch1.setup(32000.0,mtof(uart2),0.3f);
                         break;
                     case 1:
-                        ch2.setup(32000.0,mtof(uart2),0.25f);
+                        ch2.setup(32000.0,mtof(uart2),0.3f);
                         break;
                     case 2:
-                        ch3.setup(32000.0,mtof(uart2),0.2f);
+                        ch3.setup(32000.0,mtof(uart2),0.15f);
                         break;
                     case 3:
-                        ch4.setup(32000.0,mtof(uart2),0.2f);
+                        ch4.setup(32000.0,mtof(uart2),0.15f);
                         break;
                     case 4:
-                        ch5.setup(32000.0,mtof(uart2),0.2f);
+                        ch5.setup(32000.0,mtof(uart2),0.15f);
                         break;
                     case 5:
-                        ch6.setup(32000.0,mtof(uart2),0.2f);
+                        ch6.setup(32000.0,mtof(uart2),0.15f);
                         break;
                     case 6:
-                        ch7.setup(440.0,mtof(uart2),0.5f);
+                        ch7.setup(440.0,mtof(uart2),1.0f);
                         break;
                 }
 
