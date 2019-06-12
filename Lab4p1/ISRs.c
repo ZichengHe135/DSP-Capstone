@@ -49,6 +49,7 @@ stereoSample CodecDataIn, CodecDataOut;
 /* add any global variables here */
 extern char volume;
 extern char startRecording;
+extern char thru;
 
 // interrupt to make it not return to wrong place
 interrupt void Codec_ISR()
@@ -81,8 +82,17 @@ interrupt void Codec_ISR()
     } else {
 	/* add your code starting here */
 
-    CodecDataIn.Channel[0] = SYNTH_Tick()/4;
-    CodecDataIn.Channel[1] = CodecDataIn.Channel[0];
+
+    if(thru) {
+        CodecDataIn.ABC = ReadCodecData();
+        short tick = SYNTH_Tick()/4;
+        CodecDataIn.Channel[0] = CodecDataIn.Channel[0]/2 + tick;
+        CodecDataIn.Channel[1] = CodecDataIn.Channel[1]/2 + tick;
+
+    } else {
+        CodecDataIn.Channel[0] = SYNTH_Tick()/4;
+        CodecDataIn.Channel[1] = CodecDataIn.Channel[0];
+    }
 
    pitchShift(&CodecDataIn, &CodecDataOut); // working
 

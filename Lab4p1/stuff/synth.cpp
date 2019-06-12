@@ -34,6 +34,9 @@ extern "C" char flangerEnable;
 extern "C" char vibEnable;
 extern "C" char psEnableHiLow;
 
+extern "C" char thru;
+char thru = 0;
+
 // sampler pt 2
 extern "C" char startRecording;
 char startRecording = 0;
@@ -121,6 +124,9 @@ extern "C" void SYNTH_UpdateSettings(){
                         }
 
                         startRecording = !startRecording;
+                        break;
+                    case 0xB1: // line-in play-through.
+                        thru = !thru;
                         break;
 
                     case 0xff:
